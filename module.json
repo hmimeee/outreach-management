@@ -1,0 +1,13 @@
+{
+    "name": "OutreachManagement",
+    "alias": "outreachmanagement",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\OutreachManagement\\Providers\\OutreachManagementServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
