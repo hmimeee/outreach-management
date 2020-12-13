@@ -191,7 +191,7 @@ class BacklinkController extends AdminBaseController
                 $request['cost'] = 0;
                 $request['outreach_site_id'] = null;
             } else {
-                $site = Site::find($id);
+                $site = Site::find($request->outreach_site_id);
                 $request['cost'] = $request->type =='post' ? $site->post_price : $site->link_price;
             }
 

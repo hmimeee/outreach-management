@@ -26,6 +26,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     Route::resource('outreach-invoices', 'InvoiceController');
     Route::get('outreach-invoices/{site}/get-data', 'InvoiceController@data')->name('outreach-invoices.site-data');
     Route::put('outreach-invoices/{invoice}/status-update', 'InvoiceController@status')->name('outreach-invoices.status-update');
+    Route::put('outreach-invoices/{invoice}/proceed', 'InvoiceController@proceed')->name('outreach-invoices.proceed');
     Route::post('outreach-invoices/{invoice}/receipt', 'InvoiceController@receipt')->name('outreach-invoices.receipt');
     Route::get('outreach-invoices/{invoice}/print', 'InvoiceController@print')->name('outreach-invoices.print');
 
@@ -53,6 +54,7 @@ Route::group(['namespace' => 'Member', 'prefix' => 'member', 'as' => 'member.', 
     Route::resource('outreach-invoices', 'InvoiceController');
     Route::get('outreach-invoices/{site}/get-data', 'InvoiceController@data')->name('outreach-invoices.site-data');
     Route::put('outreach-invoices/{invoice}/status-update', 'InvoiceController@status')->name('outreach-invoices.status-update');
+    Route::put('outreach-invoices/{invoice}/proceed', 'InvoiceController@proceed')->name('outreach-invoices.proceed');
     Route::put('outreach-invoices/{invoice}/review', 'InvoiceController@review')->name('outreach-invoices.review');
     Route::post('outreach-invoices/{invoice}/receipt', 'InvoiceController@receipt')->name('outreach-invoices.receipt');
     Route::get('outreach-invoices/{invoice}/print', 'InvoiceController@print')->name('outreach-invoices.print');

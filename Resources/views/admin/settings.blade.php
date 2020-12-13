@@ -70,6 +70,15 @@
 						</div>
 
 						<div class="form-group">
+							<label class="required">Financers</label>
+							<select name="financers[]" class="select2 select2-multiple " multiple="multiple">
+								@foreach($users as $u)
+								<option value="{{$u->id}}" {{isset($setting->financers) ? (in_array($u->id, $setting->financers) ? 'selected' : '') : ''}}>{{$u->name}}</option>
+								@endforeach
+							</select>
+						</div>
+
+						<div class="form-group">
 							<button class="btn btn-success btn-sm">Update</button>
 						</div>
 					</form>

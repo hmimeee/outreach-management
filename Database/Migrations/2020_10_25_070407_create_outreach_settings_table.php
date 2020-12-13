@@ -15,9 +15,9 @@ class CreateOutreachSettingsTable extends Migration
     {
         Schema::create('outreach_settings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('admins')->default(1);
-            $table->string('maintainers')->default(1);
-            $table->string('observers')->default(1);
+            $table->string('admins')->default('["1"]');
+            $table->string('maintainers')->default('["1"]');
+            $table->string('observers')->default('["1"]');
             $table->timestamps();
         });
     }

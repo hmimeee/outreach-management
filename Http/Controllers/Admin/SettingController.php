@@ -88,12 +88,14 @@ class SettingController extends AdminBaseController
                     'admins' => $request->admins,
                     'maintainers' => $request->maintainers,
                     'observers' => $request->observers,
+                    'financers' => $request->financers,
                 ]);
             } else {
                 $setting = OutreachSetting::create([
                     'admins' => $request->admins,
                     'maintainers' => $request->maintainers,
                     'observers' => $request->observers,
+                    'financers' => $request->financers,
                 ]);
             }
         } catch (Exception $e) {

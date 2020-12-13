@@ -18,7 +18,8 @@ class Invoice extends Model
         'reviewer_id',
     	'review',
     	'status',
-    	'receipt',
+        'receipt',
+        'processed'
     ];
 
     protected $table = 'outreach_invoices';

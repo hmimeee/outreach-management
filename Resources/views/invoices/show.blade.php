@@ -214,7 +214,7 @@
             </div>
             @endif
 
-            @if(auth()->id() == $invoice->reviewer_id && !$invoice->status)
+            @if(auth()->id() == $invoice->reviewer_id && !$invoice->processed)
             <div class="col-md-6">
                 <form id="changeReviewStatus">
                     @csrf
@@ -232,7 +232,33 @@
             </div>
             @endif
 
-            @if(in_array(auth()->id(), $setting->admins) && $invoice->review)
+             @if(in_array(auth()->id(), $setting->admins) && $invoice->review && !$invoice->status)
+             <div class="col-md-6">
+                <form id="proceedRequest">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        @if($invoice->processed)
+                        <input type="hidden" name="status" value="0" id="status">
+                        <button class="btn btn-sm btn-danger" id="cancelPay">Cancel Pay Request</button>
+                        @else
+                        <div class="form-group">
+                            <label class="required">Select</label>
+                            <select class="form-control" name="financer" id="financer">
+                                @foreach($financers as $financer)
+                                    <option value="{{ $financer->id }}">{{ $financer->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="hidden" name="status" value="1" id="status">
+                        <button class="btn btn-sm btn-success" id="proceedPay">Proceed to Pay</button>
+                        @endif
+                    </div>
+                </form>
+            </div>
+            @endif
+
+            @if(in_array(auth()->id(), $setting->admins) && $invoice->review && $invoice->processed)
             <form method="post" id="statusChangeForm">
                 @csrf
                 @method('PUT')
@@ -458,6 +484,20 @@
     $('#changeReviewStatus').submit(function(e){
         e.preventDefault();
         url = '{{route('member.outreach-invoices.review', $invoice->id)}}';
+
+        $.easyAjax({
+            type: 'POST',
+            url: url,
+            data: $(this).serialize(),
+            success: function(response){
+                reloadInvoice();
+            }
+        })
+    })
+
+    $('#proceedRequest').submit(function(e){
+        e.preventDefault();
+        url = '{{route('admin.outreach-invoices.proceed', $invoice->id)}}';
 
         $.easyAjax({
             type: 'POST',

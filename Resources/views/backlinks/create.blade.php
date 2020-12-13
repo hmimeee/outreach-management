@@ -52,7 +52,10 @@
                     </div>
 
                     <div id="infoTab">
-                        <div class="col-xs-4">
+                        <div class="col-xs-1">
+                            <div class="m-t-25 btn btn-inverse btn-xs" id="sl">1</div>
+                        </div>
+                        <div class="col-xs-3">
                             <div class="form-group">
                                 <label class="required">Project</label>
                                 <select name="project_id[]" class="form-control select2">
@@ -119,16 +122,23 @@
 <script type="text/javascript">
 
     $('body #deleteInfo').click(function(){
-        property = $(this).parent().parent().parent();
-
-        property.remove();
+        property = $(this).parent().parent().parent().remove();
+        
+        $('#backlinksAdditionTab #infoTab').each(function (index) {
+            $(this).find('#sl').text(index+1);
+        })
+    }).then(function() {
+        
     });
 
     $('body #addMoreBacklink').click(function(){
         num = Math.floor(Math.random() * 1000) + 1;
-        property = '<div id="infoTab"> <div class="col-xs-4"> <div class="form-group"> <label class="required">Project</label> <select name="project_id[]" class="form-control select2" id="'+num+'"> @foreach($projects as $project) <option value="{{$project->id}}">{{$project->project_name}}</option> @endforeach </select> </div> </div> <div class="col-xs-4"> <div class="form-group"> <label class="control-label required">Backlink</label> <input type="text" name="backlink[]" class="form-control" placeholder="Enter Backlink"> </div> </div> <div class="col-xs-3"> <div class="form-group"> <label class="control-label">URL (for Backlink)</label> <input type="text" name="url[]" class="form-control" placeholder="Enter URL"> </div> </div> <div class="col-xs-1"> <div class="form-group"> <label class="control-label">Delete</label> <button type="button" id="deleteInfo" class="btn btn-danger btn-sm"><i class="fa fa-minus"></i></button> </div> </div> </div><script>$("#'+num+'").select2();$("body #deleteInfo").click(function(){ property = $(this).parent().parent().parent(); property.remove(); });';
+        property = '<div id="infoTab"> <div class="col-xs-1"> <div class="m-t-25 btn btn-inverse btn-xs" id="sl"></div> </div><div class="col-xs-3"> <div class="form-group"> <label class="required">Project</label> <select name="project_id[]" class="form-control select2" id="'+num+'"> @foreach($projects as $project) <option value="{{$project->id}}">{{$project->project_name}}</option> @endforeach </select> </div> </div> <div class="col-xs-4"> <div class="form-group"> <label class="control-label required">Backlink</label> <input type="text" name="backlink[]" class="form-control" placeholder="Enter Backlink"> </div> </div> <div class="col-xs-3"> <div class="form-group"> <label class="control-label">URL (for Backlink)</label> <input type="text" name="url[]" class="form-control" placeholder="Enter URL"> </div> </div> <div class="col-xs-1"> <div class="form-group"> <label class="control-label">Delete</label> <button type="button" id="deleteInfo" class="btn btn-danger btn-sm"><i class="fa fa-minus"></i></button> </div> </div> </div><script>$("#'+num+'").select2();$("body #deleteInfo").click(function(){ property = $(this).parent().parent().parent(); property.remove(); });';
 
         $('#backlinksAdditionTab').append(property);
+        $('#backlinksAdditionTab #infoTab').each(function (index) {
+            $(this).find('#sl').text(index+1);
+        })
     })
 
     //Checkbox Style

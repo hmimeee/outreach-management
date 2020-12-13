@@ -114,7 +114,7 @@ class InvoiceController extends MemberBaseController
             $invoice = Invoice::create($request->all());
 
             //Changeing name with ID
-            $invoice->name = 'BL'.str_pad($invoice->id, 8, '0', STR_PAD_LEFT);
+            $invoice->name = 'BL'.str_pad($invoice->id, 5, '0', STR_PAD_LEFT);
             $invoice->save();
 
             foreach ($links as $link) {
@@ -143,6 +143,7 @@ class InvoiceController extends MemberBaseController
     {
         $this->invoice = Invoice::findOrFail($id);
         $this->data['setting'] = $this->setting;
+        $this->financers = OutreachSetting::getFinancers();
 
         if (in_array(auth()->id(), $this->setting->admins) || in_array(auth()->id(), $this->setting->maintainers) || in_array(auth()->id(), $this->setting->observers)) {
             //
@@ -267,6 +268,13 @@ class InvoiceController extends MemberBaseController
                 'payment_date' => ($status ? date('Y-m-d') : null)
             ]);
 
+            if ($request->hasFile('file')) {
+                $receipt = $request->file('file')->store('outreach-management');
+
+                //Update the invoice
+                $invoice->update(['receipt' => $receipt]);
+            }
+
             //Add activity log
             $this->addLog($invoice->id, 'changed the invoice status to '.$request->status);
 
@@ -279,6 +287,47 @@ class InvoiceController extends MemberBaseController
         }
 
         return Reply::success('Invoice status updated successfully!');
+    }
+
+    /**
+     * Update the specified field of a row.
+     * @param Request $request
+     * @param int $invoice
+     * @return Response
+     */
+    public function proceed(Request $request, Invoice $invoice)
+    {
+        //Check if the status parameter is available in the $request
+        $request->validate([
+            'status' => 'required|in:0,1',
+            'financer' => 'sometimes|exists:users,id'
+        ]);
+
+        try {
+            //Update invoice status
+            $status = $request->status ? 'processed' : 'cancelled';
+            $invoice->update([
+                'processed' =>  $request->status
+            ]);
+
+            //Add activity log
+            $this->addLog($invoice->id, $status . ' the invoice to pay');
+
+            //Send the notification
+            $notifyTo = $this->setting->maintainers;
+            $notifyTo = User::find($notifyTo);
+            Notification::send($notifyTo, new InvoiceNotification($invoice, 'Outreach invoice payment ' . $status, $status . ' the outreach invoice to pay.'));
+
+            //Send notification to the financer
+            if ($request->financer && !$notifyTo->find($request->financer)) {
+                $notifyTo = User::find($request->financer);
+                Notification::send($notifyTo, new InvoiceNotification($invoice, 'Outreach invoice payment ' . $status, $status . ' the outreach invoice to pay.'));
+            }
+        } catch (Exception $e) {
+            return Reply::error('Something went wrong!');
+        }
+
+        return Reply::success('Outreach invoice payment ' . $status . '!');
     }
 
     /**

@@ -49,14 +49,14 @@
                     <div class="col-xs-4">
                         <div class="form-group">
                             <label class="control-label">Post Price</label>
-                            <input type="number" name="post_price" class="form-control" placeholder="Enter Post Price" value="{{ $site->post_price }}" step="any" {{in_array(auth()->id(), $setting->maintainers) && $site->status !='pending' ? 'disabled' : ''}}>
+                            <input type="number" name="post_price" class="form-control" placeholder="Enter Post Price" value="{{ $site->post_price }}" step="any" {{in_array(auth()->id(), $setting->maintainers) && $site->status =='approved' ? 'disabled' : ''}}>
                         </div>
                     </div>
 
                     <div class="col-xs-4">
                         <div class="form-group">
                             <label class="control-label">Link Price</label>
-                            <input type="number" name="link_price" class="form-control" placeholder="Enter Link Price" value="{{ $site->link_price }}" step="any" {{in_array(auth()->id(), $setting->maintainers) && $site->status !='pending' ? 'disabled' : ''}}>
+                            <input type="number" name="link_price" class="form-control" placeholder="Enter Link Price" value="{{ $site->link_price }}" step="any" {{in_array(auth()->id(), $setting->maintainers) && $site->status =='approved' ? 'disabled' : ''}}>
                         </div>
                     </div>
 

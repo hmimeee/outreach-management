@@ -161,7 +161,8 @@ class SiteController extends MemberBaseController
 
         if (in_array(auth()->id(), array_merge($this->setting->maintainers, $this->setting->admins))) {
 
-            $site->update($request->all());
+            $request['status'] = 'pending';
+            $site->update($request->except(['website']));
 
                 //Add activity log
             $this->addLog($site->id, 'updated the website details');
