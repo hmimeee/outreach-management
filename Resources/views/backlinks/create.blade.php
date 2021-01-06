@@ -127,9 +127,7 @@
         $('#backlinksAdditionTab #infoTab').each(function (index) {
             $(this).find('#sl').text(index+1);
         })
-    }).then(function() {
-        
-    });
+    })
 
     $('body #addMoreBacklink').click(function(){
         num = Math.floor(Math.random() * 1000) + 1;

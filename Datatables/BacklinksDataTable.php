@@ -44,30 +44,24 @@ class BacklinksDataTable extends BaseDataTable
         }
         return '<a target="_blank" href="'.$url.'">'.$row->project->project_name.'</a>';
       })
-      ->editColumn('outreach_site', function ($row) {
-        $url = route('member.outreach-management.index');
-
-        if (auth()->user()->hasRole('admin')) {
-          $url = route('admin.outreach-management.index');
-        }
-
-        if ($row->paid == 1) {
-          $website = '<a target="_blank" href="'.$url.'?view-site='.$row->outreach_site_id.'">'.$row->site->site.'</a>';
-        } else {
-          $website = '<a target="_blank" href="'.$row->website.'">'.str_replace('www.', '', parse_url($row->website)['host']).'</a>';
-        }
-
+      ->editColumn('url', function ($row) {
+        $website = '<a target="_blank" href="' . $row->url . '">' . $row->url . '</a>';
         return $website;
       })
       ->editColumn('backlink', function ($row) {
-        return '<a href="javascript:;" onclick="viewLink('.$row->id.')">'.Str::limit($row->backlink, 50).'</a>';
+        $link = '<a href="javascript:;" onclick="viewLink(' . $row->id . ')">' . Str::limit($row->backlink, 40) . '</a>';
+        return $link;
+      })
+      ->editColumn('visit', function ($row) {
+        $link = '<a target="_blank" href="' . $row->backlink . '">Visit Link</a>';
+        return $link;
       })
       ->editColumn('status', function ($row) {
         $class = ['pending' => 'warning', 'approved' => 'success', 'rejected' => 'danger'];
         return '<label class="label label-'.$class[$row->status].'">'. ucfirst($row->status) .'</label>';
       })
       ->addIndexColumn()
-      ->rawColumns(['action', 'project', 'outreach_site', 'backlink', 'status']);
+      ->rawColumns(['action', 'project', 'url', 'backlink', 'visit', 'status']);
     }
 
     /**
@@ -134,8 +128,9 @@ class BacklinksDataTable extends BaseDataTable
       return [
         '#' => ['data' => 'id', 'name' => 'id', 'visible' => true],
         'backlink' => ['data' => 'backlink', 'name' => 'backlink'],
+        'visit',
         'project' => ['data' => 'project', 'name' => 'project_id'],
-        'outreach site' => ['data' => 'outreach_site', 'name' => 'outreach_site_id'],
+        'target url' => ['data' => 'url', 'name' => 'url'],
         'published_date' => ['name' => 'published_date'],
         'status' => ['data' => 'status', 'name' => 'status'],
         Column::computed('action')

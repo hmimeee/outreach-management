@@ -20,6 +20,7 @@
 
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#information">Information</a></li>
+        <li><a data-toggle="tab" href="#comments">Comments</a></li>
         <li><a data-toggle="tab" href="#activity">Activity</a></li>
     </ul>
 
@@ -129,9 +130,9 @@
                     </thead>
                     <tbody>
                         @php($cost = 0)
-                        @foreach($invoice->backlinks as $link)
+                        @foreach($invoice->backlinks as $key => $link)
                         <tr>
-                            <td>{{$link->id}}</td>
+                            <td>{{$key + 1}}</td>
                             <td>
                                 Backlink: <a target="_blank" href="{{$link->backlink}}">{{\Illuminate\Support\Str::limit($link->backlink, 40)}}</a>
                                 <br>
@@ -176,6 +177,32 @@
         </div>
 
         <div class="row m-t-20">
+             @php($lastcom = $invoice->comments->last())
+            <div class="col-md-6">
+                @if($lastcom)
+                <p>
+                <img class="img-circle" src="@if($lastcom->user->image !=null) /user-uploads/avatar/{{$lastcom->user->image}} @else /img/default-profile-2.png @endif" width="25" height="25" alt="" data-toggle="tooltip" data-placement="top" title="{{$lastcom->user->name}}">
+                <b>{{$lastcom->message ?? ''}}</b> - <small><i>{{$lastcom->created_at->format('d M Y')}}</i></small>
+                </p>
+                {{-- <div class="alert alert-dark" style="background: #f0f1f2; color:#383d41">
+                <b>{{$lastcom->user->name}}</b> 
+                <i>{{$lastcom->created_at->format('d M Y')}}</i>
+                <p>
+                    {{$lastcom->message}}
+                </p>
+                </div> --}}
+                @endif
+                <div>
+                <form id="postComment">
+                    @csrf
+                    <div class="form-group">
+                        <textarea name="message" id="message" rows="4" class="form-control" placeholder="Write e comment"></textarea>
+                        <button class="btn btn-sm btn-info m-t-10">Post</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+
             @if($invoice->receipt && $invoice->status)
             <div class="col-md-{{($invoice->status && in_array(auth()->id(), $setting->admins)) ? '6' : '12'}}">
                 <div class="form-group" align="center">
@@ -285,6 +312,24 @@
             @endif
         </div>
 
+    </div>
+
+    <div id="comments" class="tab-pane fade">
+        <div class="steamline">
+            @foreach($invoice->comments as $comment)
+            <div class="sl-item">
+                <div class="sl-left" style="margin-left: -13px !important;"><img class="img-circle" src="@if($comment->user->image !=null) /user-uploads/avatar/{{$comment->user->image}} @else /img/default-profile-2.png @endif" width="25" height="25" alt="">
+                </div>
+                <div class="sl-right">
+                    <div>
+                        <h6><b>{{$comment->user->name}}</b></h6>
+                        <p>{{$comment->message}}</p>
+                        <span class="sl-date">{{$comment->created_at->format('d-m-Y H:s a')}}</span>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
     </div>
 
     <div id="activity" class="tab-pane fade">
@@ -498,6 +543,20 @@
     $('#proceedRequest').submit(function(e){
         e.preventDefault();
         url = '{{route('admin.outreach-invoices.proceed', $invoice->id)}}';
+
+        $.easyAjax({
+            type: 'POST',
+            url: url,
+            data: $(this).serialize(),
+            success: function(response){
+                reloadInvoice();
+            }
+        })
+    })
+
+    $('#postComment').submit(function(e){
+        e.preventDefault();
+        url = '{{route('member.outreach-invoices.comment', $invoice->id)}}';
 
         $.easyAjax({
             type: 'POST',

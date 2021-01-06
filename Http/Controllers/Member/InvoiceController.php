@@ -441,4 +441,18 @@ class InvoiceController extends MemberBaseController
 
         return Reply::success('Invoice deleted successfully!');
     }
+    
+    public function postComment(Invoice $invoice)
+    {
+        $invoice->comments()->create([
+            'user_id' => auth()->id(),
+            'message' => request()->message
+        ]);
+
+        //Send the notification
+        $notifyTo = User::find($this->setting->maintainers);
+        Notification::send($notifyTo, new InvoiceNotification($invoice, 'Outreach invoice comment posted', 'posted a comment in the invoice.'));
+
+        return Reply::success('Comment posted successfully!');
+    }
 }
