@@ -1,2 +1,2 @@
 # outreach-management
-Worksuitemodule "Outreach Management" to manage guest posts for SEO. 
+Worksuite module "Outreach Management" to manage guest posts for SEO. 
