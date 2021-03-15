@@ -58,4 +58,5 @@ Route::group(['namespace' => 'Member', 'prefix' => 'member', 'as' => 'member.', 
     Route::put('outreach-invoices/{invoice}/review', 'InvoiceController@review')->name('outreach-invoices.review');
     Route::post('outreach-invoices/{invoice}/receipt', 'InvoiceController@receipt')->name('outreach-invoices.receipt');
     Route::get('outreach-invoices/{invoice}/print', 'InvoiceController@print')->name('outreach-invoices.print');
+    Route::post('outreach-invoices/{invoice}/post-comment', 'InvoiceController@postComment')->name('outreach-invoices.comment');
 });

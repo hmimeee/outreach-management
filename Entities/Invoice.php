@@ -43,4 +43,9 @@ class Invoice extends Model
     {
         return $this->belongsTo(User::class, 'reviewer_id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(OutreachComment::class, 'outreach_invoice_id');
+    }
 }
