@@ -168,6 +168,7 @@ class BacklinkController extends MemberBaseController
         $this->backlink = Backlink::findOrFail($id);
         $this->projects = Project::whereNotIn('status', ['canceled', 'finished'])->get();
         $this->sites = Site::where('status', 'approved')->get();
+        $this->data['setting'] = $this->setting;
 
         if (in_array(auth()->id(), $this->setting->admins) || in_array(auth()->id(), $this->setting->maintainers) || in_array(auth()->id(), $this->setting->observers)) {
             //

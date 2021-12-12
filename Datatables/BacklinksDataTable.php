@@ -128,7 +128,8 @@ class BacklinksDataTable extends BaseDataTable
       return [
         '#' => ['data' => 'id', 'name' => 'id', 'visible' => true],
         'backlink' => ['data' => 'backlink', 'name' => 'backlink'],
-        'visit',
+        'visit' => ['data' => 'visit', 'name' => 'visit', "orderable"=> true,
+        "searchable"=> true],
         'project' => ['data' => 'project', 'name' => 'project_id'],
         'target url' => ['data' => 'url', 'name' => 'url'],
         'published_date' => ['name' => 'published_date'],
