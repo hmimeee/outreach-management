@@ -1,6 +1,9 @@
 <?php
 
+use App\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +16,5 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/outreachmanagement', function (Request $request) {
-    return $request->user();
-});
+Route::post('outreachmanagement/login', 'ApiController@login');
+Route::get('outreachmanagement/sites', 'ApiController@sites');
