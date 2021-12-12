@@ -52,7 +52,7 @@
             <td style="border-right: 1px solid rgb(239, 239, 239); overflow: hidden; padding: 2px 3px; vertical-align: middle; font-family: Calibri; font-size: 11pt; font-weight: bold; color: rgb(0, 177, 231);">Project:</td>
             <td rowspan="1" colspan="2" style="border-right: 1px solid rgb(239, 239, 239); border-bottom: 1px solid rgb(239, 239, 239); overflow: hidden; padding: 2px 3px; vertical-align: middle; font-family: Calibri; font-size: 11pt; font-weight: bold; color: #000;">{{$backlink->project->project_name}}</td>
             <td style="border-right: 1px solid rgb(239, 239, 239); border-bottom: 1px solid rgb(239, 239, 239); overflow: hidden; padding: 2px 3px; vertical-align: middle; font-family: Calibri; font-size: 11pt; font-weight: bold; color: rgb(0, 177, 231);">Website:</td>
-            <td rowspan="1" colspan="2" style="border-right: 1px solid rgb(239, 239, 239); border-bottom: 1px solid rgb(239, 239, 239); overflow: hidden; padding: 2px 3px; vertical-align: middle; font-family: Calibri; font-size: 11pt; font-weight: bold; color: #000;">{{$backlink->site->site}}</td>
+            <td rowspan="1" colspan="2" style="border-right: 1px solid rgb(239, 239, 239); border-bottom: 1px solid rgb(239, 239, 239); overflow: hidden; padding: 2px 3px; vertical-align: middle; font-family: Calibri; font-size: 11pt; font-weight: bold; color: #000;">{{$backlink->site->site ?? '--'}}</td>
             <td style="overflow: hidden; padding: 2px 3px; vertical-align: middle;">&nbsp;</td>
         </tr>
         <tr style="height: 29px;">
